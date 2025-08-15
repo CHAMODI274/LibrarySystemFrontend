@@ -1,0 +1,33 @@
+.author-card-long {
+  width: 100%;
+  margin-bottom: 15px;
+  padding: 10px;
+}
+
+.author-card-long:hover {
+  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+}
+
+.author-card-title {
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+.author-card-subtitle {
+  font-size: 1rem;
+  color: gray;
+}
+
+.author-card-text {
+  margin-top: 10px;
+}
+
+.author-card-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+}
+
+.edit-button {
+  width: 150px;
+}
