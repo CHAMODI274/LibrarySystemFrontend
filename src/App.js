@@ -8,6 +8,7 @@ import BookCatalog from './pages/BookCatalog';
 import Loan from './pages/Loan';
 import UserManagement from './pages/UserManagement';
 import Authors from './pages/Authors';
+import Publishers from './pages/Publishers';
 
 function App() {
    //console.log('API URL from env:', process.env.REACT_APP_API_URL);
@@ -22,6 +23,7 @@ function App() {
         <Route path="/loan-management" element={<Loan />} />
         <Route path="/user-management" element={<UserManagement />} />
         <Route path="/authors" element={<Authors />} />
+        <Route path="/publishers" element={<Publishers />} />
       </Routes>
     </Router>
   );
