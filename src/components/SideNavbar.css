@@ -1,0 +1,46 @@
+.side-navbar {
+  width: 220px;
+  height: 100vh;
+  background-color: #fff;
+  border-right: 1px solid #ddd;
+  padding: 20px 10px;
+  position: fixed;
+}
+
+.panel-title {
+  font-size: 12px;
+  font-weight: bold;
+  color: #888;
+  margin-bottom: 15px;
+  letter-spacing: 1px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  margin: 4px 0;
+  text-decoration: none;
+  color: #333;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.nav-item .icon {
+  margin-right: 10px;
+  font-size: 18px;
+}
+
+.nav-item:hover {
+  background-color: #f4f4f4;
+}
+
+.nav-item.active {
+  background-color: #006400;
+  color: #fff;
+}
+
+.nav-item.active .icon {
+  color: #fff;
+}
+

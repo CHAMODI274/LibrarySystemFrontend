@@ -1,0 +1,18 @@
+.auth-buttons {
+  display: flex;
+  align-items: center;
+}
+
+.auth-buttons .btn {
+  font-weight: 500;
+}
+
+.navbar-logo {
+  height: 40px; 
+  width: auto;
+}
+
+.ms-2
+{
+    font-weight: bold;
+}

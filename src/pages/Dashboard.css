@@ -1,0 +1,40 @@
+.dashboard-container {
+  display: flex;
+}
+
+.dashboard-main {
+  flex: 1;
+  padding: 20px;
+  margin-left: 220px; /* Matches SideNavbar width */
+}
+
+.dashboard-header {
+  margin-bottom: 20px;
+}
+
+.stats-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.stat-box {
+  display: flex;
+  align-items: center;
+  background: #f8f9fa;
+  padding: 15px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}
+
+.stat-icon {
+  width: 40px;
+  height: 40px;
+  margin-right: 15px;
+}
+
+.stat-number {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #007bff;
+}
