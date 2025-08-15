@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react';
 import SideNavbar from '../components/SideNavbar';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -6,8 +6,10 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import UserCard from '../components/UserCard';
+import AddUserModal from '../components/AddUserModal';
 
 export default function UserManagement() {
+      const [showModal, setShowModal] = useState(false);
 
       // Sample user data
   const users = [
@@ -33,7 +35,7 @@ export default function UserManagement() {
               Manage all library users, roles, and access permissions
             </p>
           </div>
-          <Button variant="success" className="px-4">
+         <Button variant="success" className="px-4" onClick={() => setShowModal(true)}>
             Add New User
           </Button>
         </div>
@@ -65,6 +67,9 @@ export default function UserManagement() {
             <UserCard key={user.id} user={user} />
           ))}
         </div>
+
+        {/* Add User Modal */}
+        <AddUserModal show={showModal} onHide={() => setShowModal(false)} />
       </div>
     </div>
   );

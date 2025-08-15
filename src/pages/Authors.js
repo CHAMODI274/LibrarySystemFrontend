@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react';
 import SideNavbar from '../components/SideNavbar';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -6,33 +6,26 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import AuthorCard from '../components/AuthorCard';
+import AddAuthorModal from '../components/AddAuthorModal';
 
 export default function Authors() {
+    const [showModal, setShowModal] = useState(false);
 
     // Sample Data
 const authors = [
   { 
     id: 1, 
-    name: 'James Clear', 
-    nationality: 'American', 
-    birthYear: 1986, 
-    booksCount: 3,
+    name: 'James Clear',  
     bio: 'James Clear is an author and speaker focused on habits, decision-making, and continuous improvement.'
   },
   { 
     id: 2, 
     name: 'Yuval Noah Harari', 
-    nationality: 'Israeli', 
-    birthYear: 1976, 
-    booksCount: 5,
     bio: 'Yuval Noah Harari is a historian and philosopher, best known for his book "Sapiens" exploring human history.'
   },
   { 
     id: 3, 
     name: 'Paulo Coelho', 
-    nationality: 'Brazilian', 
-    birthYear: 1947, 
-    booksCount: 12,
     bio: 'Paulo Coelho is a Brazilian lyricist and novelist, best known for his novel "The Alchemist".'
   }
 ];
@@ -54,7 +47,7 @@ const authors = [
               View and manage all authors in the library system
             </p>
           </div>
-          <Button variant="success" className="px-4">
+          <Button variant="success" onClick={() => setShowModal(true)}>
             Add New Author
           </Button>
         </div>
@@ -76,6 +69,8 @@ const authors = [
             <AuthorCard key={author.id} author={author} />
           ))}
         </div>
+
+        <AddAuthorModal show={showModal} onHide={() => setShowModal(false)} />
       </div>
     </div>
   )

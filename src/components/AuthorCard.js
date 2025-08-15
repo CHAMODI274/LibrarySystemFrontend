@@ -11,13 +11,9 @@ export default function AuthorCard({ author }) {
         {/* Left Side: Author Info */}
         <div>
           <Card.Title className="author-card-title">{author.name}</Card.Title>
-          <Card.Subtitle className="author-card-subtitle mb-2">
-            {author.nationality}
-          </Card.Subtitle>
+
           <Card.Text className="author-card-text">
             <strong>Author ID:</strong> {author.id} <br />
-            <strong>Birth Year:</strong> {author.birthYear} <br />
-            <strong>Number of Books:</strong> {author.booksCount} <br />
             <strong>Bio:</strong> {author.bio}
           </Card.Text>
         </div>

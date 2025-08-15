@@ -1,15 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react';
 import SideNavbar from '../components/SideNavbar';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
-import Dropdown from 'react-bootstrap/Dropdown';
-import DropdownButton from 'react-bootstrap/DropdownButton';
 import PublisherCard from '../components/PublisherCard';
+import AddPublisherModal from '../components/AddPublisherModal';
 
 export default function Publishers() {
+    const [showModal, setShowModal] = useState(false);
 
-     // Sample publishers data
+// Sample publishers data
 const publishers = [
   { id: 1, name: 'Avery', address: 'New York, USA' },
   { id: 2, name: 'Harper', address: 'London, UK' },
@@ -32,7 +32,7 @@ const publishers = [
               View and manage all publishers in the library system
             </p>
           </div>
-          <Button variant="success" className="px-4">
+          <Button variant="success" onClick={() => setShowModal(true)}>
             Add New Publisher
           </Button>
         </div>
@@ -55,7 +55,12 @@ const publishers = [
               ))}
         </div>
 
+        <AddPublisherModal
+          show={showModal}
+          onHide={() => setShowModal(false)}
+        />
+
       </div>
     </div>
-  )
+  );
 }

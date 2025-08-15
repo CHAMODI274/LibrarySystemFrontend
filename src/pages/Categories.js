@@ -1,13 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react';
 import SideNavbar from '../components/SideNavbar';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
-import Dropdown from 'react-bootstrap/Dropdown';
-import DropdownButton from 'react-bootstrap/DropdownButton';
 import CategoryCard from '../components/CategoryCard';
+import AddCategoryModal from '../components/AddCategoryModal';
 
 export default function Categories() {
+    const [showModal, setShowModal] = useState(false);
 
 // Sample categories
   const categories = [
@@ -36,7 +36,7 @@ export default function Categories() {
               View and manage all categories in the library system
             </p>
           </div>
-          <Button variant="success" className="px-4">
+          <Button variant="success" onClick={() => setShowModal(true)}>
             Add New Category
           </Button>
         </div>
@@ -57,6 +57,8 @@ export default function Categories() {
             <CategoryCard key={category.id} category={category} />
           ))}
         </div>
+
+        <AddCategoryModal show={showModal} onHide={() => setShowModal(false)} />
       </div>
     </div>
   )
