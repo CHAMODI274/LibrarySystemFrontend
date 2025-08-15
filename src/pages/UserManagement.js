@@ -60,7 +60,7 @@ export default function UserManagement() {
         </div>
 
         {/* User Cards */}
-        <div className="d-flex flex-wrap gap-3">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
           {users.map((user) => (
             <UserCard key={user.id} user={user} />
           ))}
