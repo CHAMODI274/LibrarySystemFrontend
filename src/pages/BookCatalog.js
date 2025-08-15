@@ -5,8 +5,96 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
+import BookCard from '../components/BookCard';
 
 export default function BookCatalog() {
+
+      // Sample books data
+ const books = [
+  {
+    id: 1,
+    title: 'Atomic Habits',
+    author: 'James Clear',
+    category: 'Self-help',
+    publisher: 'Avery',
+    copies: 10
+  },
+  {
+    id: 2,
+    title: 'Sapiens',
+    author: 'Yuval Noah Harari',
+    category: 'History',
+    publisher: 'Harper',
+    copies: 5
+  },
+  {
+    id: 3,
+    title: 'The Alchemist',
+    author: 'Paulo Coelho',
+    category: 'Fiction',
+    publisher: 'HarperOne',
+    copies: 8
+  },
+  {
+    id: 4,
+    title: 'Thinking, Fast and Slow',
+    author: 'Daniel Kahneman',
+    category: 'Psychology',
+    publisher: 'Farrar, Straus and Giroux',
+    copies: 7
+  },
+  {
+    id: 5,
+    title: '1984',
+    author: 'George Orwell',
+    category: 'Fiction',
+    publisher: 'Secker & Warburg',
+    copies: 12
+  },
+  {
+    id: 6,
+    title: 'Educated',
+    author: 'Tara Westover',
+    category: 'Memoir',
+    publisher: 'Random House',
+    copies: 6
+  },
+  {
+    id: 7,
+    title: 'The Power of Habit',
+    author: 'Charles Duhigg',
+    category: 'Self-help',
+    publisher: 'Random House',
+    copies: 9
+  },
+  {
+    id: 8,
+    title: 'Brief History of Time',
+    author: 'Stephen Hawking',
+    category: 'Science',
+    publisher: 'Bantam',
+    copies: 4
+  },
+  {
+    id: 9,
+    title: 'To Kill a Mockingbird',
+    author: 'Harper Lee',
+    category: 'Fiction',
+    publisher: 'J.B. Lippincott & Co.',
+    copies: 11
+  },
+  {
+    id: 10,
+    title: 'Guns, Germs, and Steel',
+    author: 'Jared Diamond',
+    category: 'History',
+    publisher: 'W. W. Norton & Company',
+    copies: 5
+  }
+];
+
+
+
   return (
     <div style={{ display: 'flex' }}>
       {/* Side Navigation */}
@@ -50,8 +138,10 @@ export default function BookCatalog() {
         </div>
 
         {/* Placeholder for books listing */}
-        <div>
-          {/* Book cards or table will go here later */}
+        <div className="d-flex flex-wrap gap-3">
+          {books.map((book) => (
+            <BookCard key={book.id} book={book} />
+          ))}
         </div>
       </div>
     </div>

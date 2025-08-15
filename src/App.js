@@ -5,6 +5,7 @@ import Navbar from './components/Navbar';
 import Home from './pages/Home'
 import Dashboard from './pages/Dashboard';
 import BookCatalog from './pages/BookCatalog';
+import Loan from './pages/Loan';
 
 function App() {
    //console.log('API URL from env:', process.env.REACT_APP_API_URL);
@@ -16,7 +17,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/book-catalog" element={<BookCatalog />} />
-        {/* <Route path="/contact" element={<Contact />} /> */}
+        <Route path="/loan-management" element={<Loan />} />
       </Routes>
     </Router>
   );

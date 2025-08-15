@@ -1,0 +1,52 @@
+.book-card {
+  width: 395px; /* 18rem ≈ 288px */
+  margin-bottom: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border-radius: 10px;
+}
+
+.book-card:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.book-card .card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.book-card .card-title {
+  font-size: 20px; 
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.book-card .card-subtitle {
+  font-size: 14px; 
+  color: #6c757d;
+  margin-bottom: 10px;
+}
+
+.book-card .card-text {
+  font-size: 14px; 
+  margin-bottom: 15px;
+}
+
+.book-card button {
+  font-size: 12px; 
+  padding: 5px 10px;
+}
+
+.book-card button.edit-btn {
+  width: 235px; /* longer button */
+  font-size: 12px;
+  padding: 5px 10px;
+}
+
+.book-card button.delete-btn {
+  width: 110px; /* shorter button */
+  font-size: 12px;
+  padding: 5px 10px;
+}
+
