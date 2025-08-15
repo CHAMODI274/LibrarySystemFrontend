@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react'
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import NavbarBootstrap from 'react-bootstrap/Navbar';
@@ -10,8 +10,46 @@ import SignInForm from './SignInForm'
 import SignUpForm from './SignUpForm'
 
 export default function Navbar() {
-    const [showSignIn, setShowSignIn] = useState(false)
-    const [showSignUp, setShowSignUp] = useState(false)
+  const [showSignIn, setShowSignIn] = useState(false)
+  const [showSignUp, setShowSignUp] = useState(false)
+  const [currentUser, setCurrentUser] = useState(null)
+  const navigate = useNavigate()
+  const location = useLocation()
+
+useEffect(() => {
+    const checkAuthState = () => {
+      const user = localStorage.getItem("library_current_user")
+      if (user) {
+        setCurrentUser(JSON.parse(user))
+      } else {
+        setCurrentUser(null)
+      }
+    }
+
+    checkAuthState()
+  }, [location]) // Re-run when location changes
+
+  useEffect(() => {
+    const handleStorageChange = (e) => {
+      if (e.key === "library_current_user") {
+        if (e.newValue) {
+          setCurrentUser(JSON.parse(e.newValue))
+        } else {
+          setCurrentUser(null)
+        }
+      }
+    }
+
+    window.addEventListener("storage", handleStorageChange)
+    return () => window.removeEventListener("storage", handleStorageChange)
+  }, [])
+
+  const handleLogout = () => {
+    localStorage.removeItem("library_current_user")
+    setCurrentUser(null)
+    navigate("/")
+  }
+
 
   return (
     <>
@@ -30,30 +68,34 @@ export default function Navbar() {
 
           <NavbarBootstrap.Toggle aria-controls="basic-navbar-nav" />
           <NavbarBootstrap.Collapse id="basic-navbar-nav">
-            <Nav className="me-auto">
-              <Nav.Link href="#home">Home</Nav.Link>
-              <Nav.Link as={Link} to="/dashboard">Dashboard</Nav.Link>
-            </Nav>
+            <Nav className="me-auto"></Nav>
 
-            {/* Right-aligned buttons - SignIn/UP */}
+
             <div className="auth-buttons ms-auto">
-            <Button
-                variant="outline-primary"
-                className="me-2"
-                onClick={() => setShowSignIn(true)}
-            > Sign In
-            </Button>
-              
-            <Button
-                variant="primary"
-                onClick={() => setShowSignUp(true)}
-            >Sign Up
-            </Button>
-            </div>
+              {currentUser ? (
+                <div className="d-flex align-items-center">
+                  <span className="me-3 text-dark fw-medium">{currentUser.name}</span>
+                  <Button variant="outline-danger" size="sm" onClick={handleLogout}>
+                    Logout
+                  </Button>
+                </div>
+              ) : (
+                <>
+                  <Button variant="outline-primary" className="me-2" onClick={() => setShowSignIn(true)}>
+                    {" "}
+                    Sign In
+                  </Button>
 
+                  <Button variant="primary" onClick={() => setShowSignUp(true)}>
+                    Sign Up
+                  </Button>
+                </>
+              )}
+            </div>
           </NavbarBootstrap.Collapse>
         </Container>
       </NavbarBootstrap>
+
 
       {/* Sign In Modal */}
       <SignInForm show={showSignIn} onHide={() => setShowSignIn(false)} />
@@ -63,5 +105,3 @@ export default function Navbar() {
     </>
   )
 }
-
-
