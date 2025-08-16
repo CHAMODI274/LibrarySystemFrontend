@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
-import Form from 'react-bootstrap/Form';
+import { useState, useEffect } from "react"
+import Button from "react-bootstrap/Button"
+import Modal from "react-bootstrap/Modal"
+import Form from "react-bootstrap/Form"
 import Alert from "react-bootstrap/Alert"
 
-export default function AddAuthorModal({ show, onHide, onAuthorAdded  }) {
+export default function EditAuthorModal({ show, onHide, author, onAuthorUpdated }) {
   const [formData, setFormData] = useState({
     name: "",
     bio: "",
@@ -13,6 +13,17 @@ export default function AddAuthorModal({ show, onHide, onAuthorAdded  }) {
   })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
+
+  useEffect(() => {
+    if (author) {
+      setFormData({
+        name: author.name || "",
+        bio: author.bio || "",
+        nationality: author.nationality || "",
+        birthYear: author.birthYear || "",
+      })
+    }
+  }, [author])
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
@@ -28,13 +39,13 @@ export default function AddAuthorModal({ show, onHide, onAuthorAdded  }) {
     setError("")
 
     try {
-      const { addAuthor } = await import("../utils/authorAPI")
-      const newAuthor = await addAuthor({
+      const { updateAuthor } = await import("../utils/authorAPI")
+      const updatedAuthor = await updateAuthor(author.id, {
         ...formData,
         birthYear: formData.birthYear ? Number.parseInt(formData.birthYear) : null,
       })
 
-      onAuthorAdded(newAuthor)
+      onAuthorUpdated(updatedAuthor)
       onHide()
 
       // Reset form
@@ -45,7 +56,7 @@ export default function AddAuthorModal({ show, onHide, onAuthorAdded  }) {
         birthYear: "",
       })
     } catch (err) {
-      setError("Failed to add author. Please try again.")
+      setError("Failed to update author. Please try again.")
     } finally {
       setLoading(false)
     }
@@ -53,19 +64,13 @@ export default function AddAuthorModal({ show, onHide, onAuthorAdded  }) {
 
   const handleClose = () => {
     setError("")
-    setFormData({
-      name: "",
-      bio: "",
-      nationality: "",
-      birthYear: "",
-    })
     onHide()
   }
 
   return (
     <Modal show={show} onHide={handleClose} centered>
       <Modal.Header closeButton>
-        <Modal.Title>Add New Author</Modal.Title>
+        <Modal.Title>Edit Author</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
@@ -120,11 +125,16 @@ export default function AddAuthorModal({ show, onHide, onAuthorAdded  }) {
             />
           </Form.Group>
 
-          <Button variant="success" type="submit" className="w-100" disabled={loading}>
-            {loading ? "Adding..." : "Add Author"}
-          </Button>
+          <div className="d-flex gap-2">
+            <Button variant="secondary" onClick={handleClose} disabled={loading}>
+              Cancel
+            </Button>
+            <Button variant="primary" type="submit" disabled={loading}>
+              {loading ? "Updating..." : "Update Author"}
+            </Button>
+          </div>
         </Form>
       </Modal.Body>
     </Modal>
-  );
+  )
 }

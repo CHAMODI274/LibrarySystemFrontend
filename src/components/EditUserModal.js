@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
-import Form from 'react-bootstrap/Form';
+import { useState, useEffect } from "react"
+import Button from "react-bootstrap/Button"
+import Modal from "react-bootstrap/Modal"
+import Form from "react-bootstrap/Form"
 import Alert from "react-bootstrap/Alert"
 
-export default function AddUserModal({ show, onHide, onUserAdded }) {
+export default function EditUserModal({ show, onHide, user, onUserUpdated }) {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -15,6 +15,18 @@ export default function AddUserModal({ show, onHide, onUserAdded }) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
 
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        name: user.name || "",
+        email: user.email || "",
+        phone: user.phone || "",
+        role: user.role || "",
+        status: user.status || "Active",
+      })
+    }
+  }, [user])
+
   const handleInputChange = (e) => {
     const { name, value } = e.target
     setFormData((prev) => ({
@@ -23,49 +35,32 @@ export default function AddUserModal({ show, onHide, onUserAdded }) {
     }))
   }
 
-  const resetForm = () => {
-    setFormData({
-      name: "",
-      email: "",
-      phone: "",
-      role: "",
-      status: "Active",
-    })
-    setError("")
-  }
-
   const handleSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)
     setError("")
 
     try {
-      const { addUser } = await import("../utils/userAPI")
-      const result = await addUser(formData)
+      const { updateUser } = await import("../utils/userAPI")
+      const result = await updateUser(user.id, formData)
 
       if (result.success) {
-        onUserAdded(result.user)
-        resetForm()
+        onUserUpdated(result.user)
         onHide()
       } else {
-        setError(result.error || "Failed to add user")
+        setError(result.error || "Failed to update user")
       }
     } catch (err) {
-      setError("An error occurred while adding the user")
+      setError("An error occurred while updating the user")
     } finally {
       setLoading(false)
     }
   }
 
-  const handleClose = () => {
-    resetForm()
-    onHide()
-  }
-
   return (
-    <Modal show={show} onHide={handleClose} centered>
+    <Modal show={show} onHide={onHide} centered>
       <Modal.Header closeButton>
-        <Modal.Title>Add New User</Modal.Title>
+        <Modal.Title>Edit User</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
@@ -96,8 +91,19 @@ export default function AddUserModal({ show, onHide, onUserAdded }) {
             />
           </Form.Group>
 
+          <Form.Group className="mb-3" controlId="formPhone">
+            <Form.Label>Phone</Form.Label>
+            <Form.Control
+              type="text"
+              name="phone"
+              placeholder="Enter phone number"
+              value={formData.phone}
+              onChange={handleInputChange}
+            />
+          </Form.Group>
+
           <Form.Group className="mb-3" controlId="formRole">
-           <Form.Label>Role</Form.Label>
+            <Form.Label>Role</Form.Label>
             <Form.Select name="role" value={formData.role} onChange={handleInputChange} required>
               <option value="">Select role</option>
               <option value="Admin">Admin</option>
@@ -113,11 +119,16 @@ export default function AddUserModal({ show, onHide, onUserAdded }) {
             </Form.Select>
           </Form.Group>
 
-          <Button variant="success" type="submit" className="w-100" disabled={loading}>
-            {loading ? "Adding User..." : "Add User"}
-          </Button>
+          <div className="d-flex gap-2">
+            <Button variant="secondary" onClick={onHide} disabled={loading}>
+              Cancel
+            </Button>
+            <Button variant="primary" type="submit" disabled={loading} className="flex-grow-1">
+              {loading ? "Updating..." : "Update User"}
+            </Button>
+          </div>
         </Form>
       </Modal.Body>
     </Modal>
-  );
+  )
 }

@@ -39,3 +39,18 @@
 .loan-card-buttons button:last-child {
   flex: 1;
 }
+
+.status-active {
+  color: #28a745;
+  font-weight: bold;
+}
+
+.status-returned {
+  color: #6c757d;
+  font-weight: bold;
+}
+
+.status-overdue {
+  color: #dc3545;
+  font-weight: bold;
+}
