@@ -1,23 +1,72 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SideNavbar from '../components/SideNavbar';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import CategoryCard from '../components/CategoryCard';
 import AddCategoryModal from '../components/AddCategoryModal';
+import { getAllCategories, searchCategories } from "../utils/categoryAPI"
 
 export default function Categories() {
-    const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(false)
+  const [categories, setCategories] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [searchTerm, setSearchTerm] = useState("")
+  const [alert, setAlert] = useState({ show: false, message: "", type: "" })
 
-// Sample categories
-  const categories = [
-    { id: 1, name: 'Fiction' },
-    { id: 2, name: 'Science' },
-    { id: 3, name: 'History' },
-    { id: 4, name: 'Self-help' },
-    { id: 5, name: 'Horror' },
-    { id: 6, name: 'Memoir' }
-  ];
+  useEffect(() => {
+    loadCategories()
+  }, [])
+
+  const loadCategories = async () => {
+    try {
+      setLoading(true)
+      const result = await getAllCategories()
+      if (result.success) {
+        setCategories(result.data)
+      } else {
+        showAlert("Failed to load categories", "danger")
+      }
+    } catch (error) {
+      console.error("Error loading categories:", error)
+      showAlert("Error loading categories", "danger")
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleSearch = async (term) => {
+    setSearchTerm(term)
+    if (term.trim() === "") {
+      loadCategories()
+      return
+    }
+
+    try {
+      setLoading(true)
+      const result = await searchCategories(term)
+      if (result.success) {
+        setCategories(result.data)
+      } else {
+        showAlert("Search failed", "danger")
+      }
+    } catch (error) {
+      console.error("Error searching categories:", error)
+      showAlert("Search error", "danger")
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const showAlert = (message, type) => {
+    setAlert({ show: true, message, type })
+    setTimeout(() => setAlert({ show: false, message: "", type: "" }), 3000)
+  }
+
+  const handleCategoryAdded = () => {
+    loadCategories()
+    showAlert("Category added successfully!", "success")
+  }
 
 
   return (
@@ -41,24 +90,47 @@ export default function Categories() {
           </Button>
         </div>
 
+        {alert.show && (
+          <div className={`alert alert-${alert.type} alert-dismissible fade show`} role="alert">
+            {alert.message}
+          </div>
+        )}
+
         {/* Search & Filter */}
         <div className="d-flex gap-2 mb-4">
           <InputGroup>
             <Form.Control
               type="text"
-              placeholder="Search categories by name or ID..."
+              placeholder="Search categories by name or description..."
+              value={searchTerm}
+              onChange={(e) => handleSearch(e.target.value)}
             />
           </InputGroup>
         </div>
 
-        {/* Category Cards */}
-        <div className="d-flex flex-wrap gap-3">
-          {categories.map((category) => (
-            <CategoryCard key={category.id} category={category} />
-          ))}
-        </div>
+        {loading ? (
+          <div className="text-center py-4">
+            <div className="spinner-border" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+          </div>
+        ) : (
+          
+          /* Category Cards */
+          <div className="d-flex flex-wrap gap-3">
+            {categories.length > 0 ? (
+              categories.map((category) => (
+                <CategoryCard key={category.id} category={category} onUpdate={loadCategories} onAlert={showAlert} />
+              ))
+            ) : (
+              <div className="text-center py-4 w-100">
+                <p className="text-muted">No categories found</p>
+              </div>
+            )}
+          </div>
+        )}
 
-        <AddCategoryModal show={showModal} onHide={() => setShowModal(false)} />
+        <AddCategoryModal show={showModal} onHide={() => setShowModal(false)} onCategoryAdded={handleCategoryAdded} />
       </div>
     </div>
   )

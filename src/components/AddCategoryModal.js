@@ -2,16 +2,40 @@ import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
+import { addCategory } from "../utils/categoryAPI"
 
-export default function AddCategoryModal({ show, onHide }) {
-    const [categoryName, setCategoryName] = useState('');
+export default function AddCategoryModal({ show, onHide, onCategoryAdded }) {
+  const [categoryName, setCategoryName] = useState("")
+  const [description, setDescription] = useState("")
+  const [loading, setLoading] = useState(false)
 
-    const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('New Category:', { categoryName });
-    // Call API to save category here
-    onHide(); // close modal
-  };
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    try {
+      setLoading(true)
+      const result = await addCategory({
+        name: categoryName,
+        description: description,
+      })
+
+      if (result.success) {
+        // Reset form
+        setCategoryName("")
+        setDescription("")
+        onHide() // close modal
+        // Notify parent component
+        if (onCategoryAdded) {
+          onCategoryAdded()
+        }
+      } else {
+        console.error("Failed to add category")
+      }
+    } catch (error) {
+      console.error("Error adding category:", error)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <Modal show={show} onHide={onHide} centered>
@@ -32,8 +56,8 @@ export default function AddCategoryModal({ show, onHide }) {
             />
           </Form.Group>
 
-          <Button variant="success" type="submit" className="w-100">
-            Add Category
+          <Button variant="success" type="submit" className="w-100" disabled={loading}>
+            {loading ? "Adding..." : "Add Category"}
           </Button>
         </Form>
       </Modal.Body>
