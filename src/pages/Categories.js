@@ -131,7 +131,7 @@ export default function Categories() {
           <InputGroup>
             <Form.Control
               type="text"
-              placeholder="Search categories by name or description..."
+              placeholder="Search categories by ID or name..."
               value={searchTerm}
               onChange={(e) => handleSearch(e.target.value)}
             />

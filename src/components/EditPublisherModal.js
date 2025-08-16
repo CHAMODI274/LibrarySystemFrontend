@@ -1,16 +1,25 @@
-import React, { useState } from 'react';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
-import Form from 'react-bootstrap/Form';
+import { useState, useEffect } from "react"
+import Button from "react-bootstrap/Button"
+import Modal from "react-bootstrap/Modal"
+import Form from "react-bootstrap/Form"
 import Alert from "react-bootstrap/Alert"
 
-export default function AddPublisherModal({ show, onHide, onPublisherAdded }) {
+export default function EditPublisherModal({ show, onHide, publisher, onPublisherUpdated }) {
   const [formData, setFormData] = useState({
     name: "",
     address: "",
   })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
+
+  useEffect(() => {
+    if (publisher) {
+      setFormData({
+        name: publisher.name || "",
+        address: publisher.address || "",
+      })
+    }
+  }, [publisher])
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
@@ -26,22 +35,22 @@ export default function AddPublisherModal({ show, onHide, onPublisherAdded }) {
     setError("")
 
     try {
-      const { addPublisher } = await import("../utils/publisherAPI")
-      const result = await addPublisher(formData)
+      const { updatePublisher } = await import("../utils/publisherAPI")
+      const result = await updatePublisher(publisher.id, formData)
 
       if (result.success) {
-        onPublisherAdded(result.data)
+        onPublisherUpdated(result.data)
         onHide()
         setFormData({
           name: "",
           address: "",
         })
       } else {
-        setError(result.error || "Failed to add publisher")
+        setError(result.error || "Failed to update publisher")
       }
     } catch (error) {
-      setError("An error occurred while adding the publisher")
-      console.error("Error adding publisher:", error)
+      setError("An error occurred while updating the publisher")
+      console.error("Error updating publisher:", error)
     } finally {
       setLoading(false)
     }
@@ -49,17 +58,13 @@ export default function AddPublisherModal({ show, onHide, onPublisherAdded }) {
 
   const handleClose = () => {
     setError("")
-    setFormData({
-      name: "",
-      address: "",
-    })
     onHide()
   }
 
   return (
-     <Modal show={show} onHide={handleClose} centered>
+    <Modal show={show} onHide={handleClose} centered>
       <Modal.Header closeButton>
-        <Modal.Title>Add New Publisher</Modal.Title>
+        <Modal.Title>Edit Publisher</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
@@ -90,11 +95,16 @@ export default function AddPublisherModal({ show, onHide, onPublisherAdded }) {
             />
           </Form.Group>
 
-          <Button variant="success" type="submit" className="w-100" disabled={loading}>
-            {loading ? "Adding..." : "Add Publisher"}
-          </Button>
+          <div className="d-flex gap-2">
+            <Button variant="secondary" onClick={handleClose} disabled={loading}>
+              Cancel
+            </Button>
+            <Button variant="primary" type="submit" disabled={loading}>
+              {loading ? "Updating..." : "Update Publisher"}
+            </Button>
+          </div>
         </Form>
       </Modal.Body>
     </Modal>
-  );
+  )
 }

@@ -1,74 +1,162 @@
-<<<<<<< HEAD
-# Getting Started with Create React App
+# Library Management System
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A comprehensive React.js-based library management system with mock authentication and full CRUD operations for managing books, loans, users, authors, categories, and publishers.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+### Authentication System
+- **Mock Authentication**: Sign-in and sign-up functionality with localStorage persistence
+- **User Sessions**: Automatic navigation to dashboard after authentication
+- **Secure Logout**: Clear user data and redirect to home page
 
-### `npm start`
+### Management Modules
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+#### 📚 Book Management
+- Display all books with detailed information (title, author, ISBN, copies, category)
+- Add new books with comprehensive details
+- Edit existing book information
+- Delete books from the catalog
+- Search books by title, author, or ISBN
+- Filter books by category
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+#### 👥 User Management
+- Manage library users with role-based access (Admin/Users)
+- Add new users with contact information
+- Edit user profiles and roles
+- Delete user accounts
+- Search users by name, email, or ID
+- Filter users by role
 
-### `npm test`
+#### 📖 Loan Management
+- Track book loans with borrower and due date information
+- Create new loan records
+- Edit loan details and extend due dates
+- Delete loan records
+- Search loans by borrower, book title, or loan ID
+- Automatic overdue status detection
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+#### ✍️ Author Management
+- Maintain author database with biographical information
+- Add new authors with nationality and birth year
+- Edit author profiles
+- Remove authors from database
+- Search authors by name, nationality, or biography
 
-### `npm run build`
+#### 🏷️ Category Management
+- Organize books by categories
+- Add new categories with descriptions
+- Edit category information
+- Delete categories
+- Search categories by ID or name
+- Backend API integration with localStorage fallback
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+#### 🏢 Publisher Management
+- Manage publisher information
+- Add new publishers with name and address
+- Edit publisher details
+- Delete publisher records
+- Search publishers by name or address
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Technology Stack
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- **Frontend**: React.js with functional components
+- **State Management**: React Hooks (useState, useEffect)
+- **Data Persistence**: localStorage for client-side storage
+- **Routing**: React Router for navigation
+- **Styling**: Bootstrap CSS framework
+- **API Layer**: Mock API functions with localStorage integration
 
-### `npm run eject`
+## Installation
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+1. Clone the repository:
+\`\`\`bash
+git clone <repository-url>
+cd library-management-system
+\`\`\`
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+2. Install dependencies:
+\`\`\`bash
+npm install
+\`\`\`
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+3. Start the development server:
+\`\`\`bash
+npm start
+\`\`\`
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+4. Open your browser and navigate to `http://localhost:3000`
 
-## Learn More
+## Usage
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Getting Started
+1. **Sign Up**: Create a new account or use existing credentials
+2. **Sign In**: Access the dashboard with your credentials
+3. **Navigate**: Use the sidebar to access different management modules
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Managing Data
+- **Add**: Click the "Add New" button in any module to create records
+- **Edit**: Click the edit icon on any card to modify information
+- **Delete**: Click the delete icon to remove records (with confirmation)
+- **Search**: Use the search bar to find specific records
+- **Filter**: Apply filters where available to narrow down results
 
-### Code Splitting
+## Project Structure
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+\`\`\`
+src/
+├── components/           # Reusable React components
+│   ├── BookCard.js      # Book display component
+│   ├── UserCard.js      # User display component
+│   ├── LoanCard.js      # Loan display component
+│   ├── AuthorCard.js    # Author display component
+│   ├── CategoryCard.js  # Category display component
+│   ├── PublisherCard.js # Publisher display component
+│   ├── *Modal.js        # Modal components for CRUD operations
+│   ├── Navbar.js        # Navigation bar with auth state
+│   └── SideNavbar.js    # Sidebar navigation
+├── pages/               # Main page components
+│   ├── Dashboard.js     # Main dashboard
+│   ├── BookCatalog.js   # Books management page
+│   ├── UserManagement.js# Users management page
+│   ├── Loan.js          # Loans management page
+│   ├── Authors.js       # Authors management page
+│   ├── Categories.js    # Categories management page
+│   └── Publishers.js    # Publishers management page
+├── utils/               # API utilities and helpers
+│   ├── bookAPI.js       # Book management API
+│   ├── userAPI.js       # User management API
+│   ├── loanAPI.js       # Loan management API
+│   ├── authorAPI.js     # Author management API
+│   ├── categoryAPI.js   # Category management API
+│   └── publisherAPI.js  # Publisher management API
+└── assets/              # Static assets and images
+\`\`\`
 
-### Analyzing the Bundle Size
+## API Integration
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+The system includes mock API functions that simulate backend operations:
 
-### Making a Progressive Web App
+- **localStorage Persistence**: All data is stored locally in the browser
+- **CRUD Operations**: Full Create, Read, Update, Delete functionality
+- **Search Capabilities**: Real-time search across multiple fields
+- **Error Handling**: Comprehensive error handling with user feedback
+- **Loading States**: Visual feedback during operations
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## Features in Detail
 
-### Advanced Configuration
+### Authentication Flow
+1. Users can sign up with email and password
+2. Sign-in validates credentials against localStorage
+3. Successful authentication redirects to dashboard
+4. User session persists across browser refreshes
+5. Logout clears session and redirects to home
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+### Data Management
+- **Real-time Search**: Instant filtering as you type
+- **Form Validation**: Client-side validation for all forms
+- **Confirmation Dialogs**: Safe deletion with user confirmation
+- **Success/Error Alerts**: User feedback for all operations
+- **Responsive Design**: Works on desktop and mobile devices
 
-### Deployment
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
 
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-=======
-# Library-Management-System-Frontend
->>>>>>> 152ef8f9aca893ebf7b359b95210c11c9ffc8ed9
