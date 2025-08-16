@@ -5,10 +5,13 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import CategoryCard from '../components/CategoryCard';
 import AddCategoryModal from '../components/AddCategoryModal';
-import { getAllCategories, searchCategories } from "../utils/categoryAPI"
+import EditCategoryModal from "../components/EditCategoryModal"
+import { getAllCategories, searchCategories, deleteCategory  } from "../utils/categoryAPI"
 
 export default function Categories() {
   const [showModal, setShowModal] = useState(false)
+  const [showEditModal, setShowEditModal] = useState(false)
+  const [selectedCategory, setSelectedCategory] = useState(null)
   const [categories, setCategories] = useState([])
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState("")
@@ -68,6 +71,33 @@ export default function Categories() {
     showAlert("Category added successfully!", "success")
   }
 
+  const handleEditCategory = (category) => {
+    setSelectedCategory(category)
+    setShowEditModal(true)
+  }
+
+  const handleCategoryUpdated = () => {
+    loadCategories()
+    showAlert("Category updated successfully!", "success")
+  }
+
+  const handleDeleteCategory = async (category) => {
+    if (window.confirm(`Are you sure you want to delete "${category.name}"?`)) {
+      try {
+        const result = await deleteCategory(category.id)
+        if (result.success) {
+          loadCategories()
+          showAlert("Category deleted successfully!", "success")
+        } else {
+          showAlert("Failed to delete category", "danger")
+        }
+      } catch (error) {
+        console.error("Error deleting category:", error)
+        showAlert("Error deleting category", "danger")
+      }
+    }
+  }
+
 
   return (
     <div style={{ display: 'flex' }}>
@@ -115,12 +145,17 @@ export default function Categories() {
             </div>
           </div>
         ) : (
-          
+
           /* Category Cards */
           <div className="d-flex flex-wrap gap-3">
             {categories.length > 0 ? (
               categories.map((category) => (
-                <CategoryCard key={category.id} category={category} onUpdate={loadCategories} onAlert={showAlert} />
+                <CategoryCard
+                  key={category.id}
+                  category={category}
+                  onEdit={handleEditCategory}
+                  onDelete={handleDeleteCategory}
+                />
               ))
             ) : (
               <div className="text-center py-4 w-100">
@@ -131,6 +166,12 @@ export default function Categories() {
         )}
 
         <AddCategoryModal show={showModal} onHide={() => setShowModal(false)} onCategoryAdded={handleCategoryAdded} />
+        <EditCategoryModal
+          show={showEditModal}
+          onHide={() => setShowEditModal(false)}
+          category={selectedCategory}
+          onCategoryUpdated={handleCategoryUpdated}
+        />
       </div>
     </div>
   )

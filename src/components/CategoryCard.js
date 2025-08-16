@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import './CategoryCard.css';
 
-export default function CategoryCard({ category }) {
+export default function CategoryCard({ category, onEdit, onDelete }) {
   return (
     <Card className="category-card">
       <Card.Body>
@@ -14,8 +14,12 @@ export default function CategoryCard({ category }) {
         </Card.Text>
 
         <div className="category-card-buttons">
-          <Button variant="outline-secondary" className="me-2 edit-btn">Edit</Button>
-          <Button variant="danger" className="delete-btn">Delete</Button>
+          <Button variant="outline-secondary" className="me-2 edit-btn" onClick={() => onEdit && onEdit(category)}>
+            Edit
+          </Button>
+          <Button variant="danger" className="delete-btn" onClick={() => onDelete && onDelete(category)}>
+            Delete
+          </Button>
         </div>
       </Card.Body>
     </Card>
